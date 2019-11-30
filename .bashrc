@@ -100,7 +100,7 @@ if $_macos; then
 else
   case $HOSTNAME in
   # Cheyenne supercomputer, any of the login nodes
-  ;; cheyenne*)
+  cheyenne*)
     # Edit library path
     # Set tmpdir following direction of: https://www2.cisl.ucar.edu/user-support/storing-temporary-files-tmpdir
     export LD_LIBRARY_PATH="/glade/u/apps/ch/opt/netcdf/4.6.1/intel/17.0.1/lib:$LD_LIBRARY_PATH"
