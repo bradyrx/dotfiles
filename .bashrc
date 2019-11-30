@@ -337,3 +337,29 @@ dl() {
   ! $_macos && cmd=sort || cmd=gsort
   find "$dir" -maxdepth 1 -mindepth 1 -type d -exec du -hs {} \; | sed $'s|\t\./|\t|' | sed 's|^\./||' | $cmd -sh
 }
+
+#-----------------------------------------------------------------------------#
+# Aliases/functions for printing out information
+#-----------------------------------------------------------------------------#
+# The -X show bindings bound to shell commands (i.e. not builtin readline functions, but strings specifying our own)
+# The -s show bindings 'bound to macros' (can be combination of key-presses and shell commands)
+# NOTE: Example for finding variables:
+# for var in $(variables | grep -i netcdf); do echo ${var}: ${!var}; done
+# NOTE: See: https://stackoverflow.com/a/949006/4970632
+alias aliases="compgen -a"
+alias variables="compgen -v"
+alias functions="compgen -A function" # show current shell functions
+alias builtins="compgen -b" # bash builtins
+alias commands="compgen -c"
+alias keywords="compgen -k"
+alias modules="module avail 2>&1 | cat "
+if $_macos; then
+  alias bindings="bind -Xps | egrep '\\\\C|\\\\e' | grep -v 'do-lowercase-version' | sort" # print keybindings
+  alias bindings_stty="stty -e"                # bindings
+else
+  alias bindings="bind -ps | egrep '\\\\C|\\\\e' | grep -v 'do-lowercase-version' | sort" # print keybindings
+  alias bindings_stty="stty -a"                # bindings
+fi
+alias inputrc_ops="bind -v"           # the 'set' options, and their values
+alias inputrc_funcs="bind -l"         # the functions, for example 'forward-char'
+env() { set; } # just prints all shell variables
