@@ -309,7 +309,8 @@ fi
 $_macos && _ls_command=gls || _ls_command=ls
 alias ls="$_ls_command --color=always -AF"   # ls useful (F differentiates directories from files)
 alias ll="$_ls_command --color=always -AFhl" # ls "list", just include details and file sizes
-alias lh="$_ls_command --color=always -lhtr"
+alias la="$_ls_command --color=always -AFla"
+alias lh="$_ls_command --color=always -AFlhtr"
 alias cd="cd -P" # don't want this on my mac temporarily
 alias ctags="ctags --langmap=vim:+.vimrc,sh:+.bashrc" # permanent lang maps
 log() {
@@ -563,3 +564,6 @@ alias sname='sacct --format="JobID,JobName%60"'
 
 # Weather!
 alias weather='curl wttr.in'
+
+# Other
+alias cl='clear'
