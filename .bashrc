@@ -20,6 +20,82 @@
 #-----------------------------------------------------------------------------#
 
 #-----------------------------------------------------------------------------#
+# Settings for particular machines
+# Custom key bindings and interaction
+#-----------------------------------------------------------------------------#
+# Reset all aliases
+# Very important! Sometimes we wrap new aliases around existing ones, e.g. ncl!
+unalias -a
+
+# Flag for if in MacOs
+[[ "$OSTYPE" == "darwin"* ]] && _macos=true || _macos=false
+
+# Python stuff
+# Must set PYTHONBUFFERED or else running bash script that invokes python will
+# prevent print statements from getting flushed to stdout until exe finishes
+unset PYTHONPATH
+export PYTHONUNBUFFERED=1
+
+# First, the path management
+_bashrc_message "Variables and modules"
+if $_macos; then
+  # Defaults, LaTeX, X11, Homebrew, Macports, PGI compilers, and local compilations
+  # NOTE: Added ffmpeg with sudo port install ffmpeg +nonfree
+  # NOTE: Added matlab as a symlink in builds directory
+  # NOTE: Install gcc and gfortran with 'port install gcc6' then
+  # 'port select --set gcc mp-gcc6' (check 'port select --list gcc')
+  export PATH=$(tr -d $'\n ' <<< "
+    $HOME/builds/ncl-6.5.0/bin:$HOME/builds/matlab/bin:
+    /opt/pgi/osx86-64/2018/bin:
+    /usr/local/bin:
+    /opt/local/bin:/opt/local/sbin:
+    /opt/X11/bin:/Library/TeX/texbin:
+    /usr/bin:/bin:/usr/sbin:/sbin:
+    ")
+  export LM_LICENSE_FILE="/opt/pgi/license.dat-COMMUNITY-18.10"
+  export PKG_CONFIG_PATH="/opt/local/bin/pkg-config"
+
+  # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+  # WARNING: Need to install with rvm! Get endless issues with MacPorts/Homebrew
+  # versions! See: https://stackoverflow.com/a/3464303/4970632
+  # Test with: ruby -ropen-uri -e 'eval open("https://git.io/vQhWq").read'
+  # Install rvm with: \curl -sSL https://get.rvm.io | bash -s stable --ruby
+  if [ -d ~/.rvm/bin ]; then
+    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+    export PATH="$PATH:$HOME/.rvm/bin"
+    rvm use ruby 1>/dev/null
+  fi
+
+  # NCL NCAR command language, had trouble getting it to work on Mac with conda
+  # NOTE: By default, ncl tried to find dyld to /usr/local/lib/libgfortran.3.dylib;
+  # actually ends up in above path after brew install gcc49; and must install
+  # this rather than gcc, which loads libgfortran.3.dylib and yields gcc version 7
+  # Tried DYLD_FALLBACK_LIBRARY_PATH but it screwed up some python modules
+  alias ncl='DYLD_LIBRARY_PATH="/opt/local/lib/libgcc" ncl' # fix libs
+  export NCARG_ROOT="$HOME/builds/ncl-6.5.0" # critically necessary to run NCL
+
+else
+  case $HOSTNAME in
+  # Cheyenne supercomputer, any of the login nodes
+  ;; cheyenne*)
+    # Edit library path
+    # Set tmpdir following direction of: https://www2.cisl.ucar.edu/user-support/storing-temporary-files-tmpdir
+    export LD_LIBRARY_PATH="/glade/u/apps/ch/opt/netcdf/4.6.1/intel/17.0.1/lib:$LD_LIBRARY_PATH"
+    export TMPDIR=/glade/scratch/$USER/tmp
+    # Load some modules
+    # NOTE: Use 'qinteractive' for interactive mode
+    _loaded=($(module --terse list 2>&1)) # already loaded
+    _toload=(nco tmux cdo ncl)
+    for _module in ${_toload[@]}; do
+      if [[ ! " ${_loaded[@]} " =~ "$_module" ]]; then
+        module load $_module
+      fi
+    done
+  ;; *) echo "\"$HOSTNAME\" does not have custom settings. You may want to edit your \".bashrc\"."
+  ;; esac
+fi
+
+#-----------------------------------------------------------------------------#
 # General utilties
 #-----------------------------------------------------------------------------#
 # Configure ls behavior, define colorization using dircolors
