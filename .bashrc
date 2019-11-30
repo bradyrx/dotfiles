@@ -509,3 +509,56 @@ ncvartable2() { # as above but show everything
   cdo -s infon ${args[@]} -seltimestep,1 -selname,"$1" "$2" 2>&1 | less
 }
 
+#-----------------------------------------------------------------------------#
+# Aliases
+#-----------------------------------------------------------------------------#
+# CU Boulder Web
+alias storm='ssh ribr5703@storm.colorado.edu'
+# CU Boulder Summmit
+alias summit='ssh ribr5703@login.rc.colorado.edu'
+
+# NCAR Cheyenne
+alias cheyenne='ssh -X -t rbrady@cheyenne.ucar.edu'
+
+# LANL Institutional Computing
+alias lanl='ssh -X -t rileybrady@wtrw.lanl.gov'
+alias grizzly='ssh -X -t rileybrady@wtrw.lanl.gov ssh gr-fe'
+alias wolf='ssh -X -t rileybrady@wtrw.lanl.gov ssh wf-fe'
+alias jupyter-grizzly='ssh -X -t -L 8888:localhost:2452 rileybrady@wtrw.lanl.gov ssh -L 2452:localhost:8888 gr-fe1'
+
+# NERSC/CORI
+alias cori='ssh -X -t bradyrx@cori.nersc.gov'
+
+# Cellar
+alias cellar='ssh ribr5703@cellar.int.colorado.edu'
+
+# # Software
+alias matlab='MATLAB -nodesktop -nosplash'
+
+# # Assorted commands
+alias filecount='ls | wc -l'
+
+# PBS Job Scheduler (e.g. Cheyenne)
+# interactive job
+alias qi='qsub -I -l select=1:ncpus=1 -l walltime=10800 -A P93300670 -q share'
+# see your jobs
+alias qq='qstat -u ${USER}'
+# job history
+alias qh='qhist -u ${USER}'
+
+# Slurm Job Scheduler (e.g. LANL IC)
+# interactive job
+alias sinteractive='salloc --time=04:00:00 --qos=interactive'
+# see your jobs
+alias sq='squeue -u ${USER}'
+# check what jobs are running on system
+alias srunning='squeue -l | grep " RUNNING" | more'
+# check what jobs are idle on system
+alias sidle='squeue -l | grep -v " RUNNING" | more'
+# check approximate start time for your jobs
+alias sstart='squeue --start -u ${USER}'
+# Get full name of jobs that are running
+alias sname='sacct --format="JobID,JobName%60"'
+
+# Weather!
+alias weather='curl wttr.in'
