@@ -47,7 +47,7 @@ _bashrc_message() {
 #-----------------------------------------------------------------------------#
 # Path to the bash it configuration
 export BASH_IT=$HOME/.bash_it
-export BASH_IT_THEME='bobby'
+export BASH_IT_THEME='sexy'
 export GIT_HOSTING='git@github.com'
 export EDITOR="vim"
 export GIT_EDITOR='vim'
