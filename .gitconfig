@@ -87,7 +87,7 @@
 	long       = status --long --branch
 	stat       = diff --stat
 	st         = status
-	log        = log --graph --oneline --abbrev-commit --decorate
+	logg        = log --graph --oneline --abbrev-commit --decorate
 	ci         = commit -a 
 	co         = checkout
 	rb         = rebase
