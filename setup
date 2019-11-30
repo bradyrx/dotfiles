@@ -32,7 +32,7 @@ for file in ${files[@]}; do # iterate through files
 done
 
 # vim helper installations
-BASH_IT_ADDR="git@github.com:Bash-it/bash-it.git"
+BASH_IT_ADDR="https://github.com/Bash-it/bash-it.git"
 VUNDLE_ADDR="git@github.com:gmarik/vundle.git"
 PATHOGEN_ADDR="git@github.com:tpope/vim-pathogen.git"
 
