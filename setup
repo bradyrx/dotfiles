@@ -1,0 +1,31 @@
+#!/bin/bash
+################################################################################
+# setup
+# Creates symlinks from $HOME to the committed files in $HOME/dotfiles
+################################################################################
+# Files to be ignored
+exclude=(README.md setup cleanup .gitignore originals)
+
+# Setup
+root="$HOME"
+dotfiles="$HOME/dotfiles"
+cd $dotfiles
+[ $? -ne 0 ] && echo "Error: dotfiles repo should be cloned into \$HOME." && exit 1
+files=($(git ls-tree --name-only master | xargs)) # get list of committed files
+storage="$dotfiles/originals"
+[ -d $storage ] || mkdir $storage
+
+# Move existing stuff to storage, then create symlinks
+for file in ${files[@]}; do # iterate through files
+  if ! [[ " ${exclude[@]} " =~ " $file " ]]; then
+    echo "Creating symlink to $file in $HOME/..."
+    if [ -L $root/$file ]; then
+      echo "Removing existing symlink $root/$file..."
+      rm $root/$file # remove if symlink
+    elif [ -r $root/$file ]; then
+      echo "Moving existing $file file to $storage..."
+      mv $root/$file $storage/ # copy if not
+    fi
+    ln -s $dotfiles/$file $root/$file
+  fi
+done
