@@ -338,6 +338,11 @@ dl() {
   find "$dir" -maxdepth 1 -mindepth 1 -type d -exec du -hs {} \; | sed $'s|\t\./|\t|' | sed 's|^\./||' | $cmd -sh
 }
 
+# Grepping and diffing; enable colors
+alias grep="grep --exclude-dir=_site --exclude-dir=plugged --exclude-dir=.git --exclude-dir=.svn --color=auto"
+alias egrep="egrep --exclude-dir=_site --exclude-dir=plugged --exclude-dir=.git --exclude-dir=.svn --color=auto"
+
+
 #-----------------------------------------------------------------------------#
 # Aliases/functions for printing out information
 #-----------------------------------------------------------------------------#
@@ -363,3 +368,130 @@ fi
 alias inputrc_ops="bind -v"           # the 'set' options, and their values
 alias inputrc_funcs="bind -l"         # the functions, for example 'forward-char'
 env() { set; } # just prints all shell variables
+
+#-----------------------------------------------------------------------------#
+# Supercomputer tools
+#-----------------------------------------------------------------------------#
+alias suser="squeue -u $USER"
+alias sjobs="squeue -u $USER | tail -1 | tr -s ' ' | cut -s -d' ' -f2 | tr -d '[:alpha:]'"
+
+# Kill PBS processes all at once; useful when debugging stuff, submitting teeny
+# jobs. The tail command skips first (n-1) lines.
+qkill() {
+  local proc
+  for proc in $(qstat | tail -n +3 | cut -d' ' -f1 | cut -d. -f1); do
+    qdel $proc
+    echo "Deleted job $proc"
+  done
+}
+
+#-----------------------------------------------------------------------------#
+# Dataset utilities
+#-----------------------------------------------------------------------------#
+# NetCDF tools (should just remember these)
+# NCKS behavior very different between versions, so use ncdump instead
+# * Note if HDF4 is installed in your anaconda distro, ncdump will point to *that location* before
+#   the homebrew install location 'brew tap homebrew/science, brew install cdo'
+# * This is bad, because the current version can't read netcdf4 files; you really don't need HDF4,
+#   so just don't install it
+# Summaries first
+nchelp() {
+  echo "Available commands:"
+  echo "ncinfo ncglobal ncvars ncdims
+        ncin nclist ncvarlist ncdimlist
+        ncvarinfo ncvardump ncvartable ncvartable2" | column -t
+}
+ncglobal() { # show just the global attributes
+  [ $# -ne 1 ] && echo "Usage: ncglobal FILE" && return 1
+  command ncdump -h "$@" | grep -A100 ^// | less
+}
+ncinfo() { # only get text between variables: and linebreak before global attributes
+  # command ncdump -h "$1" | sed '/^$/q' | sed '1,1d;$d' | less # trims first and last lines; do not need these
+  [ $# -ne 1 ] && echo "Usage: ncinfo FILE" && return 1
+  ! [ -r "$1" ] && { echo "File \"$1\" not found."; return 1; }
+  command ncdump -h "$1" | sed '1,1d;$d' | less # trims first and last lines; do not need these
+}
+ncvars() { # the space makes sure it isn't another variable that has trailing-substring
+  # identical to this variable, -A prints TRAILING lines starting from FIRST match,
+  # -B means prinx x PRECEDING lines starting from LAST match
+  [ $# -ne 1 ] && echo "Usage: ncvars FILE" && return 1
+  ! [ -r "$1" ] && echo "Error: File \"$1\" not found." && return 1
+  command ncdump -h "$1" | grep -A100 "^variables:$" | sed '/^$/q' | \
+    sed $'s/^\t//g' | grep -v "^$" | grep -v "^variables:$" | less
+}
+ncdims() {
+  [ $# -ne 1 ] && echo "Usage: ncdims FILE" && return 1
+  ! [ -r "$1" ] && echo "Error: File \"$1\" not found." && return 1
+  command ncdump -h "$1" | sed -n '/dimensions:/,$p' | sed '/variables:/q'  | sed '1d;$d' \
+      | tr -d ';' | tr -s ' ' | column -t
+}
+
+# Listing stuff
+ncin() { # simply test membership; exit code zero means variable exists, exit code 1 means it doesn't
+  [ $# -ne 2 ] && echo "Usage: ncin VAR FILE" && return 1
+  ! [ -r "$2" ] && echo "Error: File \"$2\" not found." && return 1
+  command ncdump -h "$2" | sed -n '/dimensions:/,$p' | sed '/variables:/q' \
+    | cut -d'=' -f1 -s | xargs | tr ' ' '\n' | grep -v '[{}]' | grep "$1" &>/dev/null
+}
+nclist() { # only get text between variables: and linebreak before global attributes
+  # note variables don't always have dimensions! (i.e. constants)
+  # in this case looks like " double var ;" instead of " double var(x,y) ;"
+  [ $# -ne 1 ] && echo "Usage: nclist FILE" && return 1
+  ! [ -r "$1" ] && echo "Error: File \"$1\" not found." && return 1
+  command ncdump -h "$1" | sed -n '/variables:/,$p' | sed '/^$/q' | grep -v '[:=]' \
+    | cut -d';' -f1 | cut -d'(' -f1 | sed 's/ *$//g;s/.* //g' | xargs | tr ' ' '\n' | grep -v '[{}]' | sort
+}
+ncdimlist() { # get list of dimensions
+  [ $# -ne 1 ] && echo "Usage: ncdimlist FILE" && return 1
+  ! [ -r "$1" ] && echo "Error: File \"$1\" not found." && return 1
+  command ncdump -h "$1" | sed -n '/dimensions:/,$p' | sed '/variables:/q' \
+    | cut -d'=' -f1 -s | xargs | tr ' ' '\n' | grep -v '[{}]' | sort
+}
+ncvarlist() { # only get text between variables: and linebreak before global attributes
+  local list dmnlist varlist
+  [ $# -ne 1 ] && echo "Usage: ncvarlist FILE" && return 1
+  ! [ -r "$1" ] && echo "Error: File \"$1\" not found." && return 1
+  list=($(nclist "$1"))
+  dmnlist=($(ncdimlist "$1"))
+  for item in "${list[@]}"; do
+    if [[ ! " ${dmnlist[@]} " =~ " $item " ]]; then
+      varlist+=("$item")
+    fi
+  done
+  echo "${varlist[@]}" | tr -s ' ' '\n' | grep -v '[{}]' | sort # print results
+}
+
+# Inquiries about specific variables
+ncvarinfo() { # as above but just for one variable
+  [ $# -ne 2 ] && echo "Usage: ncvarinfo VAR FILE" && return 1
+  ! [ -r "$2" ] && echo "Error: File \"$2\" not found." && return 1
+  command ncdump -h "$2" | grep -A100 "[[:space:]]$1(" | grep -B100 "[[:space:]]$1:" | sed "s/$1://g" | sed $'s/^\t//g'
+  # the space makes sure it isn't another variable that has trailing-substring
+  # identical to this variable; and the $'' is how to insert literal tab
+}
+ncvardump() { # dump variable contents (first argument) from file (second argument)
+  [ $# -ne 2 ] && echo "Usage: ncvardump VAR FILE" && return 1
+  ! [ -r "$2" ] && echo "Error: File \"$2\" not found." && return 1
+  $_macos && _reverse="gtac" || _reverse="tac"
+  # command ncdump -v "$1" "$2" | grep -A100 "^data:" | tail -n +3 | $_reverse | tail -n +2 | $_reverse
+  command ncdump -v "$1" "$2" | $_reverse | egrep -m 1 -B100 "[[:space:]]$1[[:space:]]" | sed '1,1d' | $_reverse
+  # tail -r reverses stuff, then can grep to get the 1st match and use the before flag to print stuff
+  # before (need extended grep to get the coordinate name), then trim the first line (curly brace) and reverse
+}
+ncvartable() { # parses the CDO parameter table; ncvarinfo replaces this
+  # Below procedure is ideal for "sanity checks" of data; just test one
+  # timestep slice at every level; the tr -s ' ' trims multiple whitespace
+  # to single and the column command re-aligns columns
+  [ $# -ne 2 ] && echo "Usage: ncvartable VAR FILE" && return 1
+  ! [ -r "$2" ] && echo "Error: File \"$2\" not found." && return 1
+  local args=("$@")
+  local args=(${args[@]:2}) # extra arguments
+  cdo -s infon ${args[@]} -seltimestep,1 -selname,"$1" "$2" | tr -s ' ' | cut -d ' ' -f 6,8,10-12 | column -t 2>&1 | less
+}
+ncvartable2() { # as above but show everything
+  [ $# -ne 2 ] && echo "Usage: ncvartable2 VAR FILE" && return 1
+  ! [ -r "$2" ] && echo "Error: File \"$2\" not found." && return 1
+  local args=("$@")
+  local args=(${args[@]:2}) # extra arguments
+  cdo -s infon ${args[@]} -seltimestep,1 -selname,"$1" "$2" 2>&1 | less
+}
