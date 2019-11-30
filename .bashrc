@@ -118,6 +118,23 @@ else
   ;; esac
 fi
 
+# Access custom executables and git repos
+# e.g., ack.
+export PATH=$(tr -d $'\n ' <<< "
+  $HOME/bin:
+  $PATH
+  ")
+
+# Save path before setting up conda
+# Brew conflicts with anaconda (try "brew doctor" to see)
+alias brew="PATH=\"$PATH\" brew"
+
+# Matplotlib stuff
+# May be necessary for rendering fonts in ipython notebooks
+# See: https://github.com/olgabot/sciencemeetproductivity.tumblr.com/blob/master/posts/2012/11/how-to-set-helvetica-as-the-default-sans-serif-font-in.md
+export MPLCONFIGDIR=$HOME/.matplotlib
+printf "done\n"
+
 #-----------------------------------------------------------------------------#
 # General utilties
 #-----------------------------------------------------------------------------#
