@@ -1,0 +1,39 @@
+"vim: foldmethod=marker
+
+" Plugins
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" Plugins to add
+" xolox/vim-easytags.git (after figuring out ctags)
+
+" vim package installer
+Plugin 'git@github.com:gmarik/Vundle.vim'
+
+" search file directories from vim
+Plugin 'git@github.com:scrooloose/nerdtree'
+
+" edit history within VIM
+Plugin 'git@github.com:mbbill/undotree'
+
+" clean commenting
+Plugin 'git@github.com:scrooloose/nerdcommenter'
+
+" tab align code
+Plugin 'git@github.com:godlygeek/tabular'
+
+" colored parentheses
+Plugin 'git@github.com:kien/rainbow_parentheses.vim'
+
+" colorschemes
+Plugin 'git@github.com:flazz/vim-colorschemes.git'
+Plugin 'git@github.com:tomasr/molokai.git'
+Plugin 'git@github.com:chriskempson/vim-tomorrow-theme.git'
+
+" check syntax errors on the fly
+Plugin 'git@github.com:scrooloose/syntastic.git'
+
+call vundle#end()
