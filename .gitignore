@@ -1,0 +1,33 @@
+# Misc stuff
+empty*
+root/
+!root/README*
+*.log
+tags
+!.vim/doc/tags
+.vim/plugged
+.DS_Store
+*.tmp
+.nfs*
+
+# Vim extras
+.session.vim
+.vimsession
+.vimtags
+.*.sw[a-z]
+
+# Storage and trash
+old
+trash
+copies
+originals
+__pycache__
+
+# Jupyter
+# MUST ignore json because it encodes a hardpath for particular anaconda
+# distributions (not relative path) which messes up the jupyterthemes font
+# The other json, jupyter_notebook_config.json, just tells jupyter to use
+# nbextensions. Also ignore custom so jupyterthemes can control it
+.jupyter/jupyter_nbconvert_config.json
+.jupyter/custom
+.ipython/profile_default
