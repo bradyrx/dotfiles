@@ -46,5 +46,13 @@ if [ ! -d "$VUNDLE_DIR" ]; then
   git clone ${VUNDLE_ADDR} ${VUNDLE_DIR}
 fi
 
+# Install bashit
+BASHIT_DIR=~/.bash_it
+if [ ! -d "$BASHIT_DIR" ]; then
+  git clone ${BASH_IT_ADDR} ${BASHIT_DIR}
+  ${BASHIT_DIR}/install.sh
+fi
+
+
 # Install vim bundles
 vim -u ~/.vimrc.bundles +BundleInstall +q
