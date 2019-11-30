@@ -213,90 +213,90 @@ _columnize() {
 export EDITOR=vim # default editor, nice and simple
 export LC_ALL=en_US.UTF-8 # needed to make Vim syntastic work
 
-#-----------------------------------------------------------------------------#
-# SHELL BEHAVIOR, KEY BINDINGS
-#-----------------------------------------------------------------------------#
-# Readline/inputrc settings
-# Use Ctrl-R to search previous commands
-# Equivalent to putting lines in single quotes inside .inputrc
-# bind '"\C-i":glob-expand-word' # expansion but not completion
-_setup_bindings() {
-  complete -r # remove completions
-  bind -r '"\C-i"'
-  bind -r '"\C-d"'
-  bind -r '"\C-s"' # to enable C-s in Vim (normally caught by terminal as start/stop signal)
-  bind 'set disable-completion off'          # ensure on
-  bind 'set completion-ignore-case on'       # want dat
-  bind 'set completion-map-case on'          # treat hyphens and underscores as same
-  bind 'set show-all-if-ambiguous on'        # one tab press instead of two; from this: https://unix.stackexchange.com/a/76625/112647
-  bind 'set menu-complete-display-prefix on' # show string typed so far as 'member' while cycling through completion options
-  bind 'set completion-display-width 1'      # easier to read
-  bind 'set bell-style visible'              # only let readlinke/shell do visual bell; use 'none' to disable totally
-  bind 'set skip-completed-text on'          # if there is text to right of cursor, make bash ignore it; only bash 4.0 readline
-  bind 'set visible-stats off'               # extra information, e.g. whether something is executable with *
-  bind 'set page-completions off'            # no more --more-- pager when list too big
-  bind 'set completion-query-items 0'        # never ask for user confirmation if there's too much stuff
-  bind 'set mark-symlinked-directories on'   # add trailing slash to directory symlink
-  bind '"\C-i": menu-complete'               # this will not pollute scroll history; better
-  bind '"\e-1\C-i": menu-complete-backward'  # this will not pollute scroll history; better
-  bind '"\e[Z": "\e-1\C-i"'                  # shift tab to go backwards
-  bind '"\C-l": forward-char'
-  bind '"\C-s": beginning-of-line' # match vim motions
-  bind '"\C-e": end-of-line'       # match vim motions
-  bind '"\C-h": backward-char'     # match vim motions
-  bind '"\C-w": forward-word'      # requires
-  bind '"\C-b": backward-word'     # by default c-b moves back one word, and deletes it
-  bind '"\eOP": menu-complete'          # history
-  bind '"\eOQ": menu-complete-backward' # history
-  bind '"\C-j": next-history'
-  bind '"\C-k": previous-history'  # history
-  bind '"\C-j": next-history'
-  bind '"\C-p": previous-history'  # history
-  bind '"\C-n": next-history'
-  stty werase undef # no more ctrl-w word delete function; allows c-w re-binding to work
-  stty stop undef   # no more ctrl-s
-  stty eof undef    # no more ctrl-d
-}
-_setup_bindings 2>/dev/null # ignore any errors
+# #-----------------------------------------------------------------------------#
+# # SHELL BEHAVIOR, KEY BINDINGS
+# #-----------------------------------------------------------------------------#
+# # Readline/inputrc settings
+# # Use Ctrl-R to search previous commands
+# # Equivalent to putting lines in single quotes inside .inputrc
+# # bind '"\C-i":glob-expand-word' # expansion but not completion
+# _setup_bindings() {
+#   complete -r # remove completions
+#   bind -r '"\C-i"'
+#   bind -r '"\C-d"'
+#   bind -r '"\C-s"' # to enable C-s in Vim (normally caught by terminal as start/stop signal)
+#   bind 'set disable-completion off'          # ensure on
+#   bind 'set completion-ignore-case on'       # want dat
+#   bind 'set completion-map-case on'          # treat hyphens and underscores as same
+#   bind 'set show-all-if-ambiguous on'        # one tab press instead of two; from this: https://unix.stackexchange.com/a/76625/112647
+#   bind 'set menu-complete-display-prefix on' # show string typed so far as 'member' while cycling through completion options
+#   bind 'set completion-display-width 1'      # easier to read
+#   bind 'set bell-style visible'              # only let readlinke/shell do visual bell; use 'none' to disable totally
+#   bind 'set skip-completed-text on'          # if there is text to right of cursor, make bash ignore it; only bash 4.0 readline
+#   bind 'set visible-stats off'               # extra information, e.g. whether something is executable with *
+#   bind 'set page-completions off'            # no more --more-- pager when list too big
+#   bind 'set completion-query-items 0'        # never ask for user confirmation if there's too much stuff
+#   bind 'set mark-symlinked-directories on'   # add trailing slash to directory symlink
+#   bind '"\C-i": menu-complete'               # this will not pollute scroll history; better
+#   bind '"\e-1\C-i": menu-complete-backward'  # this will not pollute scroll history; better
+#   bind '"\e[Z": "\e-1\C-i"'                  # shift tab to go backwards
+#   bind '"\C-l": forward-char'
+#   bind '"\C-s": beginning-of-line' # match vim motions
+#   bind '"\C-e": end-of-line'       # match vim motions
+#   bind '"\C-h": backward-char'     # match vim motions
+#   bind '"\C-w": forward-word'      # requires
+#   bind '"\C-b": backward-word'     # by default c-b moves back one word, and deletes it
+#   bind '"\eOP": menu-complete'          # history
+#   bind '"\eOQ": menu-complete-backward' # history
+#   bind '"\C-j": next-history'
+#   bind '"\C-k": previous-history'  # history
+#   bind '"\C-j": next-history'
+#   bind '"\C-p": previous-history'  # history
+#   bind '"\C-n": next-history'
+#   stty werase undef # no more ctrl-w word delete function; allows c-w re-binding to work
+#   stty stop undef   # no more ctrl-s
+#   stty eof undef    # no more ctrl-d
+# }
+# _setup_bindings 2>/dev/null # ignore any errors
 
-# Shell Options
-# Check out 'shopt -p' to see possibly interesting shell options
-# Note diff between .inputrc and .bashrc settings: https://unix.stackexchange.com/a/420362/112647
-_setup_opts() {
-  # Turn off history expansion, so can use '!' in strings; see: https://unix.stackexchange.com/a/33341/112647
-  set +H
-  # No more control-d closing terminal
-  set -o ignoreeof
-  # Disable start/stop output control
-  stty -ixon # note for putty, have to edit STTY value and set ixon to zero in term options
-  # Exit this script when encounter error, and print each command; useful for debugging
-  # set -ex
-  # Various shell options
-  shopt -s cmdhist                 # save multi-line commands as one command in shell history
-  shopt -s checkwinsize            # allow window resizing
-  shopt -u nullglob                # turn off nullglob; so e.g. no null-expansion of string with ?, * if no matches
-  shopt -u extglob                 # extended globbing; allows use of ?(), *(), +(), +(), @(), and !() with separation "|" for OR options
-  shopt -u dotglob                 # include dot patterns in glob matches
-  shopt -s direxpand               # expand dirs
-  shopt -s dirspell                # attempt spelling correction of dirname
-  shopt -s cdspell                 # spelling errors during cd arguments
-  shopt -s cdable_vars             # cd into shell variable directories, no $ necessary
-  shopt -s nocaseglob              # case insensitive
-  shopt -s autocd                  # typing naked directory name will cd into it
-  shopt -s no_empty_cmd_completion # no more completion in empty terminal!
-  shopt -s histappend              # append to the history file, don't overwrite it
-  shopt -s cmdhist                 # save multi-line commands as one command
-  shopt -s globstar                # **/ matches all subdirectories, searches recursively
-  shopt -u failglob                # turn off failglob; so no error message if expansion is empty
-  # shopt -s nocasematch # don't want this; affects global behavior of case/esac, and [[ =~ ]] commands
-  # Related environment variables
-  export HISTIGNORE="&:[ ]*:return *:exit *:cd *:source *:. *:bg *:fg *:history *:clear *" # don't record some commands
-  export PROMPT_DIRTRIM=2 # trim long paths in prompt
-  export HISTSIZE=50000
-  export HISTFILESIZE=10000 # huge history -- doesn't appear to slow things down, so why not?
-  export HISTCONTROL="erasedups:ignoreboth" # avoid duplicate entries
-}
-_setup_opts 2>/dev/null # ignore if option unavailable
+# # Shell Options
+# # Check out 'shopt -p' to see possibly interesting shell options
+# # Note diff between .inputrc and .bashrc settings: https://unix.stackexchange.com/a/420362/112647
+# _setup_opts() {
+#   # Turn off history expansion, so can use '!' in strings; see: https://unix.stackexchange.com/a/33341/112647
+#   set +H
+#   # No more control-d closing terminal
+#   set -o ignoreeof
+#   # Disable start/stop output control
+#   stty -ixon # note for putty, have to edit STTY value and set ixon to zero in term options
+#   # Exit this script when encounter error, and print each command; useful for debugging
+#   # set -ex
+#   # Various shell options
+#   shopt -s cmdhist                 # save multi-line commands as one command in shell history
+#   shopt -s checkwinsize            # allow window resizing
+#   shopt -u nullglob                # turn off nullglob; so e.g. no null-expansion of string with ?, * if no matches
+#   shopt -u extglob                 # extended globbing; allows use of ?(), *(), +(), +(), @(), and !() with separation "|" for OR options
+#   shopt -u dotglob                 # include dot patterns in glob matches
+#   shopt -s direxpand               # expand dirs
+#   shopt -s dirspell                # attempt spelling correction of dirname
+#   shopt -s cdspell                 # spelling errors during cd arguments
+#   shopt -s cdable_vars             # cd into shell variable directories, no $ necessary
+#   shopt -s nocaseglob              # case insensitive
+#   shopt -s autocd                  # typing naked directory name will cd into it
+#   shopt -s no_empty_cmd_completion # no more completion in empty terminal!
+#   shopt -s histappend              # append to the history file, don't overwrite it
+#   shopt -s cmdhist                 # save multi-line commands as one command
+#   shopt -s globstar                # **/ matches all subdirectories, searches recursively
+#   shopt -u failglob                # turn off failglob; so no error message if expansion is empty
+#   # shopt -s nocasematch # don't want this; affects global behavior of case/esac, and [[ =~ ]] commands
+#   # Related environment variables
+#   export HISTIGNORE="&:[ ]*:return *:exit *:cd *:source *:. *:bg *:fg *:history *:clear *" # don't record some commands
+#   export PROMPT_DIRTRIM=2 # trim long paths in prompt
+#   export HISTSIZE=50000
+#   export HISTFILESIZE=10000 # huge history -- doesn't appear to slow things down, so why not?
+#   export HISTCONTROL="erasedups:ignoreboth" # avoid duplicate entries
+# }
+# _setup_opts 2>/dev/null # ignore if option unavailable
 
 #-----------------------------------------------------------------------------#
 # General utilties
