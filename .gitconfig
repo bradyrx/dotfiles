@@ -85,8 +85,13 @@
 	branches   = "!git remote prune origin; git --no-pager branch -vv --all"
 	short      = status --short --branch
 	long       = status --long --branch
-    stat       = diff --stat
-    st         = status
+	stat       = diff --stat
+	st         = status
+	log        = log --graph --oneline --abbrev-commit --decorate
+	ci         = commit -a 
+	co         = checkout
+	rb         = rebase
+	rc         = rebase --continue
 	hist       = log -p --
 	wtf        = !git-wtf $@
 	user       = !git-user $@
