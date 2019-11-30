@@ -136,6 +136,37 @@ export MPLCONFIGDIR=$HOME/.matplotlib
 printf "done\n"
 
 #-----------------------------------------------------------------------------#
+# Anaconda stuff
+#-----------------------------------------------------------------------------#
+unset _conda
+if [ -d "$HOME/anaconda3" ]; then
+  _conda='anaconda3'
+elif [ -d "$HOME/miniconda3" ]; then
+  _conda='miniconda3'
+fi
+if [ -n "$_conda" ] && ! [[ "$PATH" =~ "conda" ]]; then # above doesn't work, need to just check path
+  # For info on what's going on see: https://stackoverflow.com/a/48591320/4970632
+  # The first thing creates a bunch of environment variables and functions
+  # The second part calls the 'conda' function, which calls an activation function, which does the
+  # whole solving environment thing
+  # If you use the '. activate' version, there is an 'activate' file in bin
+  # that does these two things
+  _bashrc_message "Enabling conda"
+  source $HOME/$_conda/etc/profile.d/conda.sh # set up environment variables
+  CONDA_CHANGEPS1=false conda activate # activate the default environment, without changing PS1
+  avail() {
+    local current latest
+    [ $# -ne 1 ] && echo "Usage: avail PACKAGE" && return 1
+    current=$(conda list "$1" | grep '\b'"$1"'\b' | awk 'NR == 1 {print $2}')
+    latest=$(conda search "$1" | grep '\b'"$1"'\b' | awk 'END {print $2}')
+    echo "Package:         $1"
+    echo "Current version: $current"
+    echo "Latest version:  $latest"
+    }
+  printf "done\n"
+fi
+
+#-----------------------------------------------------------------------------#
 # General utilties
 #-----------------------------------------------------------------------------#
 # Configure ls behavior, define colorization using dircolors
