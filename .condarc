@@ -1,0 +1,10 @@
+always_yes: True
+show_channel_urls: True
+auto_update_conda: True
+channels:
+  - defaults
+  - conda-forge
+  - r
+create_default_packages:
+  - pip
+  - ipykernel
