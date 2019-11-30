@@ -1,0 +1,83 @@
+# Notebook stuff; use filter to modify file when it is staged, use
+# the diff to modify files before comparing in git diff
+*.ipynb filter=nbstripout
+*.ipynb diff=ipynb
+
+# Mark files as binary
+# This extension list was just copied from .dircolors.ansi
+# Image
+*.bmp  -text -diff
+*.cgm  -text -diff
+*.dl   -text -diff
+*.emf  -text -diff
+*.gif  -text -diff
+*.jpeg -text -diff
+*.jpg  -text -diff
+*.JPG  -text -diff
+*.mng  -text -diff
+*.pbm  -text -diff
+*.pcx  -text -diff
+*.pgm  -text -diff
+*.png  -text -diff
+*.PNG  -text -diff
+*.ppm  -text -diff
+*.pps  -text -diff
+*.ppsx -text -diff
+*.svg  -text -diff
+*.svgz -text -diff
+*.tga  -text -diff
+*.tif  -text -diff
+*.tiff -text -diff
+*.xbm  -text -diff
+*.xcf  -text -diff
+*.xpm  -text -diff
+*.xwd  -text -diff
+*.xwd  -text -diff
+*.yuv  -text -diff
+
+# Audio
+*.aac  -text -diff
+*.au   -text -diff
+*.flac -text -diff
+*.m4a  -text -diff
+*.mid  -text -diff
+*.midi -text -diff
+*.mka  -text -diff
+*.mp3  -text -diff
+*.mpa  -text -diff
+*.mpeg -text -diff
+*.mpg  -text -diff
+*.ogg  -text -diff
+*.opus -text -diff
+*.ra   -text -diff
+*.wav  -text -diff
+
+# Video
+*.anx  -text -diff
+*.asf  -text -diff
+*.avi  -text -diff
+*.axv  -text -diff
+*.flc  -text -diff
+*.fli  -text -diff
+*.flv  -text -diff
+*.gl   -text -diff
+*.m2v  -text -diff
+*.m4v  -text -diff
+*.mkv  -text -diff
+*.mov  -text -diff
+*.MOV  -text -diff
+*.mp4  -text -diff
+*.mp4v -text -diff
+*.mpeg -text -diff
+*.mpg  -text -diff
+*.nuv  -text -diff
+*.ogm  -text -diff
+*.ogv  -text -diff
+*.ogx  -text -diff
+*.qt   -text -diff
+*.rm   -text -diff
+*.rmvb -text -diff
+*.swf  -text -diff
+*.vob  -text -diff
+*.webm -text -diff
+*.wmv  -text -diff
