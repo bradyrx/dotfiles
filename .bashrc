@@ -167,6 +167,14 @@ if [ -n "$_conda" ] && ! [[ "$PATH" =~ "conda" ]]; then # above doesn't work, ne
 fi
 
 #-----------------------------------------------------------------------------#
+# Wrappers for common functions
+#-----------------------------------------------------------------------------#
+_bashrc_message "Functions and aliases"
+# Environment variables
+export EDITOR=vim # default editor, nice and simple
+export LC_ALL=en_US.UTF-8 # needed to make Vim syntastic work
+
+#-----------------------------------------------------------------------------#
 # General utilties
 #-----------------------------------------------------------------------------#
 # Configure ls behavior, define colorization using dircolors
