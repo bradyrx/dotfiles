@@ -293,3 +293,21 @@ if hash tput 2>/dev/null; then
   export LESS_TERMCAP_ue=$'\e[0m'        # reset underline
   export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 fi
+
+# Information on directories
+$_macos || alias hardware="cat /etc/*-release" # print out Debian, etc. release info
+$_macos || alias cores="cat /proc/cpuinfo | awk '/^processor/{print \$3}' | wc -l"
+# Directory sizes, normal and detailed, analagous to ls/ll
+alias df="df -h" # disk useage
+alias du='du -h -d 1' # also a better default du
+ds() {
+  local dir
+  [ -z $1 ] && dir="." || dir="$1"
+  find "$dir" -maxdepth 1 -mindepth 1 -type d -print | sed 's|^\./||' | sed 's| |\\ |g' | _columnize
+}
+dl() {
+  local cmd dir
+  [ -z $1 ] && dir="." || dir="$1"
+  ! $_macos && cmd=sort || cmd=gsort
+  find "$dir" -maxdepth 1 -mindepth 1 -type d -exec du -hs {} \; | sed $'s|\t\./|\t|' | sed 's|^\./||' | $cmd -sh
+}
