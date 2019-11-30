@@ -170,6 +170,32 @@ fi
 # Wrappers for common functions
 #-----------------------------------------------------------------------------#
 _bashrc_message "Functions and aliases"
+
+# Neat function that splits lines into columns so they fill the terminal window
+_columnize() {
+  local cmd
+  local input output final
+  local tcols ncols maxlen nlines
+  [ $# -eq 0 ] && input=$(cat /dev/stdin) || input="$1"
+  ! $_macos && cmd=wc || cmd=gwc
+  ncols=1 # start with 1
+  tcols=$(tput cols)
+  maxlen=0 # initial
+  nlines=$(printf "$input" | $cmd -l) # check against initial line count
+  output="$input" # default
+  while true; do
+    final="$output" # record previous output, this is what we will print
+    output=$(printf "$input" | xargs -n$ncols | column -t)
+    maxlen=$(printf "$output" | $cmd -L)
+    # maxlen=$(printf "$output" | awk '{print length}' | sort -nr | head -1) # or wc -L but that's unavailable on mac
+    [ $maxlen -gt $tcols ] && break # this time *do not* print latest result, will result in line break due to terminal edge
+    [ $ncols -gt $nlines ] && final="$output" && break # test *before* increment, want to use that output
+    # echo terminal $tcols ncols $ncols nlines $nlines maxlen $maxlen
+    let ncols+=1
+  done
+  printf "$final"
+}
+
 # Environment variables
 export EDITOR=vim # default editor, nice and simple
 export LC_ALL=en_US.UTF-8 # needed to make Vim syntastic work
