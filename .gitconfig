@@ -123,7 +123,7 @@
 [color]
 	ui = on
 [push]
-	default = upstream
+	default = nothing 
 	followTags = true
 [user]
 	name = Riley Brady
