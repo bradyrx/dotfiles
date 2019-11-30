@@ -30,3 +30,18 @@ for file in ${files[@]}; do # iterate through files
     ln -s $dotfiles/$file $root/$file
   fi
 done
+
+# vim helper installations
+BASH_IT_ADDR="git@github.com:Bash-it/bash-it.git"
+VUNDLE_ADDR="git@github.com:gmarik/vundle.git"
+PATHOGEN_ADDR="git@github.com:tpope/vim-pathogen.git"
+
+# Install Pathogen (doubles up with Vundle to make sure things install correctly)
+mkdir -p ~/.vim/autoload ~/.vim/bundle && \
+curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+
+# Install Vundle and Bash_it
+git clone ${VUNDLE_ADDR} ~/.vim/bundle/Vundle.vim
+
+# Install vim bundles
+vim -u ~/.vimrc.bundles +BundleInstall +q
