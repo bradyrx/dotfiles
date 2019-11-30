@@ -4,7 +4,7 @@
 # Creates symlinks from $HOME to the committed files in $HOME/dotfiles
 ################################################################################
 # Files to be ignored
-exclude=(README.md setup cleanup .gitignore originals)
+exclude=(README.md setup cleanup .gitignore originals LICENSE)
 
 # Setup
 root="$HOME"
