@@ -1,0 +1,11 @@
+distributed:
+  worker:
+    memory:
+    target: false  # don't spill to disk 
+    spill: false  # don't spill to disk 
+    pause: 0.80  # fraction at which we pause worker threads
+    terminate: 0.95  # fraction at which we terminate the worker
+
+  dashboard:
+     link: "/proxy/{port}/status"
+#     export-tool: False
