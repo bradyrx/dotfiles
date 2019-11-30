@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+###############################################################################
+# Remove all symlinks to dotfiles in the home directory
+###############################################################################
+shopt -s dotglob # show hidden files as well
+for f in ~/*; do
+  [ -L "$f" ] || continue
+  [[ "$(readlink "$f")" =~ "dotfiles" ]] || continue
+  echo "Removing dotfile symlink \"$f\"."
+  rm "$f"
+done

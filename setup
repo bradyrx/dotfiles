@@ -13,6 +13,7 @@ cd $dotfiles
 [ $? -ne 0 ] && echo "Error: dotfiles repo should be cloned into \$HOME." && exit 1
 files=($(git ls-tree --name-only master | xargs)) # get list of committed files
 storage="$dotfiles/originals"
+# Double pipe says if conditional True, never execute the second.
 [ -d $storage ] || mkdir $storage
 
 # Move existing stuff to storage, then create symlinks
