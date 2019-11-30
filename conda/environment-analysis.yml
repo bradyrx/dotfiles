@@ -10,7 +10,6 @@ dependencies:
   # Analysis
   - climpred
   - esmlab
-  - esmtools
   - xgcm
   # I/O
   - intake-esm
@@ -61,7 +60,7 @@ dependencies:
     - git+https://github.com/lukelbd/proplot.git
     - salem
     # Analysis
-    - esmtools
+    - git+https://github.com/bradyrx/esmtools.git
     - git+https://github.com/NCAR/pop-tools.git
     - xarray>=0.14 # Move to pip to easily force version.
     # Parallelization
