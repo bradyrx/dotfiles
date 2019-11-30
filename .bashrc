@@ -43,6 +43,19 @@ _bashrc_message() {
 }
 
 #-----------------------------------------------------------------------------#
+# Bash_it config
+#-----------------------------------------------------------------------------#
+# Path to the bash it configuration
+export BASH_IT=$HOME/.bash_it
+export BASH_IT_THEME='bobby'
+export GIT_HOSTING='git@github.com'
+export EDITOR="vim"
+export GIT_EDITOR='vim'
+# Don't check mail when opening terminal.
+unset MAILCHECK
+source $BASH_IT/bash_it.sh
+
+#-----------------------------------------------------------------------------#
 # Settings for particular machines
 # Custom key bindings and interaction
 #-----------------------------------------------------------------------------#
@@ -495,3 +508,4 @@ ncvartable2() { # as above but show everything
   local args=(${args[@]:2}) # extra arguments
   cdo -s infon ${args[@]} -seltimestep,1 -selname,"$1" "$2" 2>&1 | less
 }
+

@@ -50,7 +50,7 @@ fi
 BASHIT_DIR=~/.bash_it
 if [ ! -d "$BASHIT_DIR" ]; then
   git clone ${BASH_IT_ADDR} ${BASHIT_DIR}
-  ${BASHIT_DIR}/install.sh
+  ${BASHIT_DIR}/install.sh --no-modify-config
 fi
 
 
