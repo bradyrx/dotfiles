@@ -57,7 +57,7 @@ dependencies:
   - pip
   - pip:
     # Visualization
-    - git+https://github.com/lukelbd/proplot.git
+    - proplot
     - salem
     # Analysis
     - git+https://github.com/bradyrx/esmtools.git
