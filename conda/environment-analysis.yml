@@ -48,6 +48,7 @@ dependencies:
   - basemap
   - cartopy
   - cmocean
+  - descartes
   - geoviews
   - holoviews
   - hvplot
