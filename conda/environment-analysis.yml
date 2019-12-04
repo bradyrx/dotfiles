@@ -21,6 +21,7 @@ dependencies:
   - cftime
   - jupyter-server-proxy
   - ipykernel
+  - nbstripout
   - nc-time-axis
   # MPAS
   - mpas_tools
