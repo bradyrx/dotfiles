@@ -357,6 +357,10 @@ dl() {
 alias grep="grep --exclude-dir=_site --exclude-dir=plugged --exclude-dir=.git --exclude-dir=.svn --color=auto"
 alias egrep="egrep --exclude-dir=_site --exclude-dir=plugged --exclude-dir=.git --exclude-dir=.svn --color=auto"
 
+# git-completion
+if [ -f ~/dotfiles/.git-completion.bash ]; then
+  . ~/dotfiles/.git-completion.bash
+fi
 
 #-----------------------------------------------------------------------------#
 # Aliases/functions for printing out information
@@ -567,3 +571,4 @@ alias weather='curl wttr.in'
 
 # Other
 alias cl='clear'
+
