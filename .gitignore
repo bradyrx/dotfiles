@@ -31,3 +31,8 @@ __pycache__
 .jupyter/jupyter_nbconvert_config.json
 .jupyter/custom
 .ipython/profile_default
+
+# Config stuff from local software
+.config/ParaView
+.config/texstudio
+.config/dask/dask.yaml
