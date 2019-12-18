@@ -24,7 +24,7 @@
 # 1) https://unix.stackexchange.com/questions/88602/scp-from-remote-host-fails-due-to-login-greeting-set-in-bashrc
 # 2) https://unix.stackexchange.com/questions/18231/scp-fails-without-error
 [[ $- != *i* ]] && return
-clear # first clear screen
+# clear # first clear screen
 
 # Prompt
 # Keep things minimal, just make prompt boldface so its a bit more identifiable
@@ -73,7 +73,7 @@ unset PYTHONPATH
 export PYTHONUNBUFFERED=1
 
 # First, the path management
-_bashrc_message "Variables and modules"
+# _bashrc_message "Variables and modules"
 if $_macos; then
   # Defaults, LaTeX, X11, Homebrew, Macports, PGI compilers, and local compilations
   # NOTE: Added ffmpeg with sudo port install ffmpeg +nonfree
@@ -146,7 +146,7 @@ alias brew="PATH=\"$PATH\" brew"
 # May be necessary for rendering fonts in ipython notebooks
 # See: https://github.com/olgabot/sciencemeetproductivity.tumblr.com/blob/master/posts/2012/11/how-to-set-helvetica-as-the-default-sans-serif-font-in.md
 export MPLCONFIGDIR=$HOME/.matplotlib
-printf "done\n"
+# printf "done\n"
 
 #-----------------------------------------------------------------------------#
 # Anaconda stuff
@@ -164,7 +164,7 @@ if [ -n "$_conda" ] && ! [[ "$PATH" =~ "conda" ]]; then # above doesn't work, ne
   # whole solving environment thing
   # If you use the '. activate' version, there is an 'activate' file in bin
   # that does these two things
-  _bashrc_message "Enabling conda"
+  # _bashrc_message "Enabling conda"
   source $HOME/$_conda/etc/profile.d/conda.sh # set up environment variables
   CONDA_CHANGEPS1=false conda activate # activate the default environment, without changing PS1
   avail() {
@@ -176,13 +176,13 @@ if [ -n "$_conda" ] && ! [[ "$PATH" =~ "conda" ]]; then # above doesn't work, ne
     echo "Current version: $current"
     echo "Latest version:  $latest"
     }
-  printf "done\n"
+#  printf "done\n"
 fi
 
 #-----------------------------------------------------------------------------#
 # Wrappers for common functions
 #-----------------------------------------------------------------------------#
-_bashrc_message "Functions and aliases"
+# _bashrc_message "Functions and aliases"
 
 # Neat function that splits lines into columns so they fill the terminal window
 _columnize() {
