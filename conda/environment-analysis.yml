@@ -47,6 +47,7 @@ dependencies:
   # Workflow
   - jupyter
   - jupyterlab
+  - rise
   # Visualization
   - basemap
   - cartopy
