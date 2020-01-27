@@ -156,6 +156,8 @@ if [ -d "$HOME/anaconda3" ]; then
   _conda='anaconda3'
 elif [ -d "$HOME/miniconda3" ]; then
   _conda='miniconda3'
+else  # Case for CU Summit computer.
+  _conda='projects/miniconda3'
 fi
 if [ -n "$_conda" ] && ! [[ "$PATH" =~ "conda" ]]; then # above doesn't work, need to just check path
   # For info on what's going on see: https://stackoverflow.com/a/48591320/4970632
