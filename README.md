@@ -28,3 +28,13 @@ Note that you need ipykernel installed in your environment for it to be detectab
 ## Proxy Issues
 
 There is sometimes issues with installing packages from conda/pip on government computers (like at LANL). You need to add the proper proxy to `.condarc` for conda, and type `export https_proxy=https://proxyout.lanl.gov:8080` for pip (for LANL for instance).
+
+## Cancel All Slurm Jobs
+
+Didn't know where else to put this, but it can be done like this:
+
+```bash
+squeue -u $USER | grep 427 | awk '{print $1}' | xargs -n 1 scancel
+```
+
+Where `427` is to be replaced by the prefix for the `JOBID`. This is useful when you have a bunch of pending `dask` workers.
