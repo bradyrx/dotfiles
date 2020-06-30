@@ -4,6 +4,8 @@ This setup is based on https://github.com/lukelbd/dotfiles, but built from the g
 
 ## Procedure on a new machine
 
+0. Run `brew install coreutils` to get `gls` to work properly.
+
 1. Run `bash setup`
 
 2. Install miniconda or anaconda.
