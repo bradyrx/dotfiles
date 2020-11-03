@@ -2,30 +2,31 @@ name: analysis
 channels:
   - conda-forge
 dependencies:
-  - python=3.7
+  - python=3.8
   # Aesthetics
   - black
   - isort
   - flake8
   # Analysis
   - climpred
-  - esmlab
+  - esmtools
+  - regionmask
+  - xarray
   - xgcm
+  - xrft
+  - xskillscore
   # I/O
   - intake-esm
   - h5netcdf
   - netcdf4
   - zarr
   # Miscellaneous 
-  - bottleneck
   - cftime
   - jupyter-server-proxy
   - ipykernel
-  - nbstripout
   - nc-time-axis
-  # MPAS
-  - mpas_tools
   # Numerics
+  - bottleneck
   - geopandas
   - numba
   - numpy
@@ -35,7 +36,7 @@ dependencies:
   - dask-jobqueue
   - distributed
   # Regridding
-  - esmpy
+  - esmpy=*=mpi*
   - xesmf
   # Statistics
   - eofs
@@ -57,16 +58,11 @@ dependencies:
   - holoviews
   - hvplot
   - matplotlib
+  - proplot
+  - salem
   - seaborn
   - xhistogram
   - pip
   - pip:
-    # Visualization
-    - proplot
-    - salem
-    # Analysis
-    - git+https://github.com/bradyrx/esmtools.git
-    - git+https://github.com/NCAR/pop-tools.git
-    - xarray>=0.14 # Move to pip to easily force version.
     # Parallelization
     - ncar-jobqueue
