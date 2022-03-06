@@ -8,11 +8,13 @@ This setup is based on https://github.com/lukelbd/dotfiles, but built from the g
 
 1. Run `bash setup`
 
-2. Install miniconda or anaconda.
+2. On OSX Monterey, was having issues with Vundle. It might be worth manually installing via their package instructions: https://github.com/VundleVim/Vundle.vim#quick-start.
 
-3. For a new conda environment, run `conda env -f conda/environment-analysis.yml` which will install mostly everything you need.
+3. Install miniconda or anaconda.
 
-4. Add the following to `~/.ssh/config` on your laptop (you might have to make `~/.ssh/config` and `~/.ssh/connections`):
+4. For a new conda environment, run `conda env -f conda/environment-analysis.yml` which will install mostly everything you need.
+
+5. Add the following to `~/.ssh/config` on your laptop (you might have to make `~/.ssh/config` and `~/.ssh/connections`):
 
 ```bash
 ControlMaster auto
