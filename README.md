@@ -12,7 +12,7 @@ This setup is based on https://github.com/lukelbd/dotfiles, but built from the g
 
 3. Install miniconda or anaconda.
 
-4. For a new conda environment, run `conda env -f conda/environment-analysis.yml` which will install mostly everything you need.
+4. For a new conda environment, run `conda env update -f conda/environment-analysis.yml` which will install mostly everything you need.
 
 5. Add the following to `~/.ssh/config` on your laptop (you might have to make `~/.ssh/config` and `~/.ssh/connections`):
 
